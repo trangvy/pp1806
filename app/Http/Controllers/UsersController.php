@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Requests\UpdateUser;
 
 class UsersController extends Controller
 {
@@ -61,7 +62,13 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return back();
+        }
+
+        return view('users.edit', ['user' => $user]);
     }
 
     /**
@@ -71,9 +78,18 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, $id)
     {
-        //
+        $data = $request->only(['name', 'email']);
+
+        try {
+            $user = User::find($id);
+            $user->update($data);
+        } catch (Exception $e) {
+            return back()->with('status', 'Update fail');
+        }
+
+        return redirect('users')->with('status', 'Profile updated!');
     }
 
     /**
