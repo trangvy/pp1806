@@ -14,4 +14,12 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'total_price', 'description',
     ];
+
+    function user() {
+        $this->belongsTo('App\User');
+    }
+
+    function products() {
+        $this->belongsToMany('App\Product', 'order_products', 'order_id', 'product_id');
+    }
 }
