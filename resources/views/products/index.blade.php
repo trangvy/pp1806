@@ -23,6 +23,7 @@
                           <th scope="col">Product Name</th>
                           <th scope="col">Price</th>
                           <th scope="col">Quantity</th>
+                          <th scope="col">User Name</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -36,8 +37,15 @@
                               <td>{{ $product->price }}</td>
                               <td>{{ $product->quantity }}</td>
                               <td>
-                                  <a href="products/{{ $product->id }}/edit" class="btn btn-info" role="button">Edit</a>
-                                  <a href="#" class="btn btn-info btn-del-product" role="button" data-product-id="{{ $product->id }}">Delete</a>
+                                  {{ $product->user ? $product->user->name : 'Undefined' }}
+                              </td>
+                              <td>
+                                @if ( $product->user && (auth()->id() == $product->user->id) )
+                                    <a href="products/{{ $product->id }}/edit" class="btn btn-info" role="button">Edit</a>
+                                    <a href="#" class="btn btn-info btn-del-product" role="button" data-product-id="{{ $product->id }}">Delete</a>
+                                @else 
+                                    <a href="products/{{ $product->id }}" class="btn btn-info" role="button">View</a>
+                                @endif
                               </td>
                             </tr>
                         @endforeach

@@ -45,15 +45,17 @@ class ProductsController extends Controller
     {
         $validated = $request->validated();
         $data = $request->only(['category_id', 'product_name', 'price', 'image', 'quantity', 'avg_rating']);
-        
+        $currentUserId = auth()->id();
+
         try {
+            $data['user_id'] = $currentUserId;
             Product::create($data);
         } catch (\Exception $e) {
 
             return back()->with('status', $e->getMessage());
         }
 
-        return redirect()->route('products.index')->with('status', 'Update successfuly');
+        return redirect()->route('products.index')->with('status', 'Create successfuly');
     }
 
     /**
@@ -84,7 +86,13 @@ class ProductsController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
+
             return back()->with('status', 'Product have not exist');
+        }
+
+        if ($product->id != auth()->id()) {
+
+            return back()->with('status', 'You have not permission');
         }
 
         return view('products.edit', compact('product'));
@@ -101,12 +109,17 @@ class ProductsController extends Controller
     {
         $validated = $request->validated();
         $data = $request->only(['category_id', 'product_name', 'price', 'image', 'quantity', 'avg_rating']);
+        $product = Product::find($id);
 
         try {
-            $product = Product::find($id);
             $product->update($data);
         } catch (\Exception $e) {
             return back()->with('status', 'Update fail');
+        }
+
+        if ($product->id != auth()->id()) {
+
+            return back()->with('status', 'You have not permission');
         }
 
         return redirect(route('products.show',$product->id))->with('status', 'Product updated!');

@@ -29,6 +29,12 @@ class User extends Authenticatable
     ];
 
     public function orders() {
+
         return $this->hasMany('App\Order');
+    }
+
+    public function products() {
+
+        return $this->hasMany('App\Product');
     }
 }
