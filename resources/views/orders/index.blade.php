@@ -8,26 +8,43 @@
                     <div class="card-header">{{ __('Order List') }}</div>
 
                     <div class="card-body">
-                        <table class="table">
+                        <table   class="table" width="100%">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Total Product</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($users as $user)
-                                <tr class="row_{{ $user->id }}">
-                                    <th scope="row">{{ $user->id }}</th>
+                            @foreach ($orders as $order)
+                                <tr class="row_{{ $order->id }}">
+                                    <th scope="row">{{ $order->id }}</th>
                                     <td>
-                                        <a href="/users/{{ $user->id }}">{{ $user->name }}</a>
+                                        <a href="/users/{{ $order->user->id }}">{{ $order->user->name }}</a>
                                     </td>
-                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $order->total_price }}</td>
+                                    <td>{{ $order->products->count() }}</td>
                                     <td>
-                                        <a href="users/{{ $user->id }}/edit" class="btn btn-info" role="button">Edit</a>
-                                        <a href="#" class="btn btn-info btn-del-user" role="button" data-user-id="{{ $user->id }}">Delete</a>
+                                        @switch($order->status)
+                                            @case(config('orders.cancelled'))
+                                            <span class="status badge badge-danger">{{ __('order.status.' . $order->status) }}</span>
+                                            @break
+
+                                            @case(config('orders.delivering'))
+                                            <span class="status badge badge-warning">{{ __('order.status.' . $order->status) }}</span>
+                                            @break
+
+                                            @default
+                                            <span class="status badge badge-primary">{{ __('order.status.' . $order->status) }}</span>
+                                        @endswitch
+                                    </td>
+                                    <td>
+                                        <a href="users/{{ $order->id }}/edit" class="btn btn-info" role="button">Edit</a>
+                                        <a href="#" class="btn btn-info btn-del-user" role="button" data-user-id="{{ $order->id }}">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach

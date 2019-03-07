@@ -15,7 +15,13 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::all();
+
+        if(!$orders) {
+            return redirect(route('home'))->with('status', 'Have not any order');
+        }
+
+        return view('orders.index', ['orders' => $orders]);
     }
 
     /**

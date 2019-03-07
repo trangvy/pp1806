@@ -26,14 +26,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
     Route::post('/users/{user}', 'UsersController@update')->name('users.update');
 
-    Route::post('/orders', 'OrdersController@store')->name('orders.store');
+    Route::get('/orders', 'OrdersController@index')->name('orders.index');
     Route::get('/orders/create', 'OrdersController@create')->name('orders.create');
+    Route::post('/orders', 'OrdersController@store')->name('orders.store');
+
+    Route::get('/products', 'ProductsController@index')->name('products.index');
+    Route::get('products/create', 'ProductsController@create')->name('products.create');
+    Route::post('/products', 'ProductsController@store')->name('products.store');
+    Route::get('products/{product}', 'ProductsController@show')->name('products.show');
+    Route::get('products/{product}/edit', 'ProductsController@edit')->name('products.edit');
+    Route::post('products/{product}', 'ProductsController@update')->name('products.update');
+    Route::delete('products/{product}', 'ProductsController@destroy')->name('products.destroy');
 });
 
-Route::get('/products', 'ProductsController@index')->name('products.index');
-Route::get('products/create', 'ProductsController@create')->name('products.create');
-Route::post('/products', 'ProductsController@store')->name('products.store');
-Route::get('products/{product}', 'ProductsController@show')->name('products.show');
-Route::get('products/{product}/edit', 'ProductsController@edit')->name('products.edit');
-Route::post('products/{product}', 'ProductsController@update')->name('products.update');
-Route::delete('products/{product}', 'ProductsController@destroy')->name('products.destroy');
+

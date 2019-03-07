@@ -12,14 +12,16 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'total_price', 'description',
+        'user_id', 'total_price', 'description','status'
     ];
 
     function user() {
-        $this->belongsTo('App\User');
+
+        return $this->belongsTo('App\User');
     }
 
     function products() {
-        $this->belongsToMany('App\Product', 'order_products', 'order_id', 'product_id');
+
+        return $this->belongsToMany('App\Product', 'order_products', 'order_id', 'product_id');
     }
 }
