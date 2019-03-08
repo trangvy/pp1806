@@ -14,7 +14,8 @@ class AddAttributeStatusToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(config('order.new'));
+            // $table->tinyInteger('status')->default(config('order.new'));
+            $table->tinyInteger('status');
         });
     }
 

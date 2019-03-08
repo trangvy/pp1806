@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrderCreateRequest;
 use App\Order;
+use App\OrderProduct;
+use App\Product;
 
 class OrdersController extends Controller
 {
@@ -31,6 +33,7 @@ class OrdersController extends Controller
      */
     public function create()
     {
+
         return view('orders.create');
     }
 
@@ -40,19 +43,39 @@ class OrdersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderCreateRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->only(['total_price', 'description']);
+        $productId = $request->get('product_id');
+        $product = Product::find($productId);
+
+        if (!$product) {
+            return back()->with('status', 'Product not exist');
+        }
+
+        $data['total_price'] = $product->price;
+        $data['description'] = "description";
+
         $currentUserId = auth()->id();
 
+        $user = User::find($currentUserId);
+
+        if () {
+            # code...
+        }
         try {
             $data['user_id'] = $currentUserId;
-            Order::create($data);
+            $order = Order::create($data);
+
+            $orderProduct['order_id'] = $order->id;
+            $orderProduct['product_id'] = $product->id;
+            $orderProduct['quantity'] = 1;
+            $orderProduct['price'] = $product->price;
+            OrderProduct::create($orderProduct);
         } catch (Exception $e) {
             return back()->with('status', 'Create fail');
         }
 
-        return redirect("users/$currentUserId")->with('status', 'Profile updated!');
+        return redirect("orders/$order->id")->with('status', 'Create successfuly !');
     }
 
     /**
@@ -63,7 +86,9 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = Order::find($id);
+
+        return view('orders.show', compact('order'));
     }
 
     /**
