@@ -1,20 +1,5 @@
 @extends('layouts.app')
 
-@section('navbar')
-    <li class="nav-item">
-        <a class="nav-link navbar-brand" href="{{ route('orders.index') }}">{{ __('Orders') }}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link navbar-brand" href="{{ route('products.index') }}">{{ __('Products') }}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link navbar-brand" href="{{ route('login') }}">{{ __('My Orders') }}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link navbar-brand" href="{{ route('login') }}">{{ __('My Products') }}</a>
-    </li>
-@endsection
-
 @section('content')
 
     @foreach ($categories as $category)
@@ -27,7 +12,7 @@
                 <div class="category-products">
                     @php ($i = 1)
                     @foreach ($category->products as $product)
-                        @if ($i <= 6)
+                            @if ($i <= 6)
                             <div class="product-item card" style="width: 10rem;">
                                 <img class="card-img-top" src="{{ $product->image }}" alt="Card image cap">
                                 <div class="card-body">
@@ -43,7 +28,7 @@
                                     </form>
                                 </div>
                             </div>
-                        @endif
+                            @endif
                         @php ($i++)
                     @endforeach
                 </div>

@@ -16,7 +16,6 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::all();
-
         if (!$products) {
             return redirect(route('home'))->with('status', 'Have not any product');
         }
@@ -86,12 +85,10 @@ class ProductsController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-
             return back()->with('status', 'Product have not exist');
         }
 
-        if ($product->id != auth()->id()) {
-
+        if ($product->user->id != auth()->id()) {
             return back()->with('status', 'You have not permission');
         }
 
@@ -117,7 +114,7 @@ class ProductsController extends Controller
             return back()->with('status', 'Update fail');
         }
 
-        if ($product->id != auth()->id()) {
+        if ($product->user->id != auth()->id()) {
 
             return back()->with('status', 'You have not permission');
         }
@@ -133,18 +130,27 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            Product::destroy($id);
-            $result = [
-                'status' => true,
-                'message' => 'Delete success'
-            ];
-        } catch (\Exception $e) {
+        $product = Product::find($id);
+
+        if (!$product) {
             $result = [
                 'status' => false,
-                'message' => 'Delete fail',
-                'error' => $e->getMessage()
+                'message' => 'Product does not exist',
             ];
+        } else {
+            try {
+                Product::destroy($id);
+                $result = [
+                    'status' => true,
+                    'message' => 'Delete successfully'
+                ];
+            } catch (\Exception $e) {
+                $result = [
+                    'status' => false,
+                    'message' => 'Failed to delete product',
+                    'error' => $e->getMessage()
+                ];
+            }
         }
 
         return response()->json($result);

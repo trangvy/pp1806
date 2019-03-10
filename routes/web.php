@@ -17,11 +17,13 @@
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
-// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index');
+
 Route::get('/products', 'ProductsController@index')->name('products.index');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/home', 'HomeController@home')->name('home');
+
     Route::get('/users', 'UsersController@index')->name('users.index');
     Route::get('/users/{user}', 'UsersController@show')->name('users.show');
     Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
@@ -29,9 +31,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user}', 'UsersController@update')->name('users.update');
 
     Route::get('/orders', 'OrdersController@index')->name('orders.index');
-    Route::post('/orders/create', 'OrdersController@create')->name('orders.create');
+    Route::get('/orders/create', 'OrdersController@create')->name('orders.create');
+    Route::post('/orders_product', 'OrdersController@storeOrderProduct')->name('orders.storeOrderProduct');
     Route::post('/orders', 'OrdersController@store')->name('orders.store');
     Route::get('/orders/{order}', 'OrdersController@show')->name('orders.show');
+    Route::get('/orders/{order}/edit', 'OrdersController@edit')->name('orders.edit');
+    Route::post('orders/{order}', 'OrdersController@update')->name('orders.update');
+    Route::delete('orders/{order}', 'OrdersController@destroy')->name('orders.destroy');
 
     
     Route::get('products/create', 'ProductsController@create')->name('products.create');

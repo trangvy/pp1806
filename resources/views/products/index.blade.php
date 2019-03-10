@@ -13,9 +13,10 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                        <div class="alert alert-success" style="display: none">
-                        </div>
 
+                    <div class="alert alert-success" style="display: none"></div>
+                    <div class="alert alert-warning" style="display: none;"></div>
+                    <a href="products/create" class="btn btn-info" role="button" style="margin-bottom:20px;">Create Product</a>
                      <table class="table">
                       <thead>
                         <tr>
@@ -51,8 +52,6 @@
                         @endforeach
                       </tbody>
                     </table>
-
-                    <a href="products/create" class="btn btn-info" role="button">Create Product</a>
                 </div>
             </div>
         </div>
@@ -77,9 +76,12 @@
                     type: 'DELETE',
 
                     success: function(result) {
-                        $('.row_' + productId).remove();
-                        $('.alert-success').show().html('<p>' +  result.message + '</p>');
-                        setTimeout(function(){  $('.alert-success').hide(); }, 5000);
+                        if (result.status) {
+                            $('.row_' + productId).remove();
+                            $('.alert-success').show().html('<p>' +  result.message + '</p>');
+                        } else {
+                            $('.alert-warning').show().html('<p>' +  result.message + '</p>');
+                        }
                     },
                     error: function(result) {
                         alert(result.message, result.error);

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use App\Product;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -22,10 +24,24 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::all();
+        $products = Product::all();
+        $categories = Category::all();
 
-        return view('home', compact('product'));
+        if (!$products) {
+            $request->session()->flash('status', 'Have not any product');
+        }
+
+        return view('index', compact('categories'));
+    }
+
+    public function home()
+    {
+        $user = User::find(auth()->id());
+        $product = Product::all();
+        $categories = Category::all();
+
+        return view('home', ['user' => $user, 'product' => $product, 'categories' => $categories]);
     }
 }

@@ -24,7 +24,6 @@ class CreateProduct extends FormRequest
      */
     public function rules()
     {
-
         return [
             'category_id' => ['required', 'numeric'],
             'product_name' => ['required', new AlphaSpaces],
@@ -32,7 +31,6 @@ class CreateProduct extends FormRequest
             'image' => 'required|url',
             'quantity' => 'required|numeric',
             'avg_rating' => 'Nullable|numeric'
-
         ];
     }
 }

@@ -51,6 +51,10 @@ class UsersController extends Controller
     {
         $user = User::find($id);
 
+        if (!$user) {
+            return back();
+        }
+
         return view('users.show', ['user' => $user]);
     }
 
@@ -65,7 +69,7 @@ class UsersController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return back();
+            return back()->with('status', 'Update fail');
         }
 
         return view('users.edit', ['user' => $user]);
@@ -80,6 +84,7 @@ class UsersController extends Controller
      */
     public function update(UpdateUser $request, $id)
     {
+        $validated = $request->validated();
         $data = $request->only(['name', 'email']);
 
         try {
@@ -107,7 +112,7 @@ class UsersController extends Controller
                 'status' => true,
                 'msg' => 'Delete success',
             ];
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $result = [
                 'status' => false,
                 'msg' => 'Delete fail',

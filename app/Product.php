@@ -16,18 +16,14 @@ class Product extends Model
     	return $this->belongsTo('App\User');
     }
 
-    /*public function orders()
-    {
-    	return $this->belongsToMany('App\Order', 'order_product', 'order_id', 'product_id');
-    }*/
+    public function category() {
 
-    // public function orders()
-    // {
-    //     return $this->belongsToMany('App\Order')
-    //                     ->using('App\UserRole')
-    //                     ->withPivot([
-    //                         'created_by',
-    //                         'updated_by'
-    //                     ]);
-    // }
+        return $this->belongsTo('App\Category');
+    }
+
+    public function orders()
+    {
+    	return $this->belongsToMany('App\Order', 'order_product', 'product_id', 'order_id');
+    }
+
 }
