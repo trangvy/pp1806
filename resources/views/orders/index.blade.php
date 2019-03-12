@@ -64,11 +64,13 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{ $orders->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('.btn-del-order').click(function () {

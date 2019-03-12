@@ -5,6 +5,13 @@
     @foreach ($categories as $category)
         <section class="product-list row " >
             <div class="category container">
+                <form class="form-inline" action="/search ">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="search" placeholder="Search..">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Search</button>
+                </form>
+
                 <div class="category-title">
                     <p class="h3" > Category {{ $category->name }}</p>
                 </div>

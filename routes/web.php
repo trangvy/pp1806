@@ -48,4 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('products/{product}', 'ProductsController@destroy')->name('products.destroy');
 });
 
-
+Route::get('/search', function (Request $request) {
+    dd ($request->search);
+    return App\Order::search($request->search)->get();
+});

@@ -19,7 +19,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::paginate(15);
 
         if(!$orders) {
             return redirect(route('home'))->with('status', 'Have not any order');

@@ -15,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(15);
         if (!$products) {
             return redirect(route('home'))->with('status', 'Have not any product');
         }
